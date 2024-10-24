@@ -1,0 +1,19 @@
+# Documentation regarding the Sheet API is available at https://myapiz.com/apis/sheet
+#
+name: Upload spreadsheet to SheetAPI
+on:
+  push:
+    branches:
+      - main
+env:
+  SHEET_API_KEY: ${{ secrets.SHEET_API_KEY }}
+  SHEET_ID: mortgage-demo
+
+jobs:
+  deploy:
+    name: Deploy app
+    runs-on: ubuntu-latest
+    concurrency: deploy-group    # optional: ensure only one action runs at a time
+    steps:
+      - uses: actions/checkout@v4
+      - run: echo '"'$(base64 -i  mortgage.xlsx)'"' | curl --data-binary @- -XPOST  -H 'x-myapiz-key: ${SHEET_API_KEY}' 'https://api.myapiz.com/sheet/${SHEET_ID}'
