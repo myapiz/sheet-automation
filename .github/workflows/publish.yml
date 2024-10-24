@@ -3,8 +3,8 @@
 name: Publish spreadsheet to SheetAPI
 on:
   push:
-    paths:
-      - "*.xlsx"
+    #    paths:
+    #  - "*.xlsx"
     branches:
       - main
 env:
@@ -18,9 +18,4 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: |
-          # iterate over all xlsx files in the repository
-          # and upload them to the SheetAPI
-          for file in *.xlsx; do
-            echo "Uploading $file"
-            curl --data-binary @$file -XPOST  -H 'x-myapiz-key: ${SHEET_API_KEY}' 'https://api.myapiz.com/sheet/${file}'
-          done
+          sh .github/workflows/publish.sh
