@@ -29,14 +29,43 @@ For this example, there are no external dependencies except for the Sheet APIs.
 - Testing is implemented using a simple script as shown below.
 
 - This Github repository needs to be configured with secret
-  variable `SHEET_API_KEY` containing "write" capable API key.
+  variable `SHEET_API_KEY` containing API key of a client app
+  with "write" and "execute" permissions.
 
-## Publishing Workflow
+## Github Actions Workflow
 
-The publishing workflow is defined in the .github/workflows/publish.yml file.
+### Publishing as an API
 
-It is triggered by a push to the main branch and on changed xlsx file.
+The publishing steps are defined in the .github/workflows/publish.yml file
+and in .github/workflows/publish.sh script.
+
+It is triggered by a push to the main branch with changed xlsx or test\_\* file.
 
 The workflow downloads this repository and then sends the spreadsheet via POST request
 to the Sheet API which creates or overwrites the spreadsheet in your client application
 account. SHEET_API_KEY secret variable is used to authenticate the request.
+
+### Running tests
+
+In the tests folder, we have a simple testing setup with helper functions for calling
+the newly published spreadsheet and some asserting functions -- tests/sheet.sh
+and tests/assert.sh.
+
+The test scripts are defined in tests/test\_\*.sh files.
+
+The example test_mortgage.sh script defines a test scenario for the spreadsheet
+and then executes it.
+
+Here is an example of a test scenario:
+
+```bash
+
+  # calculate total interest with load amount 300000 and interest rate 2.0
+  assert_contain "$(eval_sheet "mortgage.xlsx" I13 E8=300000 E9=2.0)" "1721296." "total interest is invalid"
+```
+
+Here we evaluate the spreadsheet with two input parameters "E8=300000 E9=2.0" and
+we assert that the output cell "I13" contains "1721296.".
+
+To simplify testing, the eval_sheet function takes the reference of
+the single cell that we are validating.

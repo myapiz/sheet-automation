@@ -5,6 +5,7 @@ on:
   push:
     #    paths:
     #  - "*.xlsx"
+    #  - "tests/test_*.sh"
     branches:
       - main
 env:
