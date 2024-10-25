@@ -1,9 +1,11 @@
+#!/usr/bin/env bash
+
 DIR_TESTS=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 
 source "$DIR_TESTS/assert.sh"
 
 log_header "Test assert : test_assert.sh"
-function join_by {
+join_by() {
   local IFS="$1"
   shift
   echo "$*"
