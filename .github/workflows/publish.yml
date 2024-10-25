@@ -18,6 +18,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: |
-          sh .github/workflows/publish.sh
+          bash .github/workflows/publish.sh
       - run: |
-          sh tests/test_mortgage.sh
+          bash tests/test_mortgage.sh
